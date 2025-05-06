@@ -8,7 +8,7 @@ RUN apt-get update && \
 
 COPY . .
 RUN dart pub get
-RUN dart compile exe bin/chop_url.dart -o bin/server
+RUN dart compile exe bin/chop_url.dart -o bin/server --enable-experiment=ffi-static
 
 FROM scratch
 
