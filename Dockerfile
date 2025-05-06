@@ -1,4 +1,5 @@
-FROM dart:stable-slim AS build
+# Build stage
+FROM dart:stable AS build
 
 WORKDIR /app
 COPY . .
