@@ -1,8 +1,11 @@
 import 'package:dartonic/dartonic.dart';
 
-import 'schemas.dart';
+import '../schemas/tables.dart';
 
-final dartonic = Dartonic("sqlite:urlshortener.db", schemas: [urlTable]);
+final dartonic = Dartonic(
+  "sqlite:urlshortener.db",
+  schemas: [urlTable, usersTable, clickLogsTable],
+);
 final db = dartonic.instance;
 
 Future<void> initDb() async {

@@ -3,12 +3,12 @@ import 'package:darto/darto.dart';
 import 'package:dartonic/dartonic.dart';
 import 'package:uuid/uuid.dart';
 
-import 'schemas/schemas.dart';
+import '../schemas/validations.dart';
 
-Router appRouter() {
+Router baseRouter() {
   final router = Router();
 
-  router.post('/shorten', (req, res) async {
+  router.post('/shorten', (Request req, Response res) async {
     final body = await req.body;
     final result = createUrlSchema.safeParse(body);
 
@@ -32,17 +32,15 @@ Router appRouter() {
       'expires_at': expires?.toIso8601String(),
     });
 
-    return res.json({'short_url': 'http://localhost:3000/$slug'});
+    return res.json({'short_url': '${req.protocol}://${req.host}/$slug'});
   });
 
-  router.get('/:slug', (req, res) async {
+  router.get('/:slug', (Request req, Response res) async {
     final slug = req.params['slug'];
 
     final result =
         (await db.select().from('urls').where(eq('urls.slug', slug)) as List)
             .first;
-
-    print(result);
 
     if (result == null) {
       return res.status(404).json({'error': 'Link não encontrado'});
